@@ -1,19 +1,27 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'markdown-to-supabase'
+description: 'A Github action which syncs your markdown files with your Supabase database'
+author: 'Johnny Magrippis'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  docs-root-path:
+    description:
+      'The path to the root of your docs directory, which has all the markdown
+      files you would like to sync with your DB'
+    required: false
+    default: 'docs'
+  supabase-url:
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+    description: 'Your Supabase project URL'
+  supabase-service-role-key:
+    required: true
+    description: 'Your Supabase SERVICE_ROLE key'
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: composite
+  steps:
+    - uses: oven-sh/setup-bun@v1
+    - run: bun install --production
+      shell: bash
+    - run: bun src/index.ts ${{ inputs.docs-root-path }} ${{ inputs.supabase-url }} ${{ inputs.supabase-service-role-key }}
+      shell: bash

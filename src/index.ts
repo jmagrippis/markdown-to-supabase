@@ -1,7 +1,15 @@
-/**
- * The entrypoint for the action.
- */
-import { run } from './main'
+import core from '@actions/core'
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-run()
+import {run} from './main'
+
+try {
+	const [, , docsRootPath, supabaseUrl, supabaseServiceRoleKey] = Bun.argv
+
+	run({
+		docsRootPath,
+		supabaseUrl,
+		supabaseServiceRoleKey,
+	})
+} catch (err) {
+	core.setFailed(`Action failed with error: ${err}`)
+}
