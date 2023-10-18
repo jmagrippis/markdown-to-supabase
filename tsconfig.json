@@ -5,7 +5,6 @@
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"sourceMap": true,
-		"outDir": "./dist",
 		"noImplicitAny": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
