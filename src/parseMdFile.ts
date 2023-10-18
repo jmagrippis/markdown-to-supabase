@@ -1,4 +1,4 @@
-import frontMatter from 'front-matter'
+import matter from 'gray-matter'
 
 const deriveChecksum = (raw: string) => {
 	const hasher = new Bun.CryptoHasher('sha256')
@@ -12,7 +12,7 @@ export const parseMdFile = async (path: string) => {
 
 	const checksum = deriveChecksum(raw)
 
-	const {attributes, body} = frontMatter(raw)
+	const {content, data} = matter(raw)
 
-	return {content: body, frontMatter: attributes, checksum}
+	return {content, frontMatter: data, checksum}
 }
