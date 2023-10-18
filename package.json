@@ -18,7 +18,7 @@
 		"setup"
 	],
 	"exports": {
-		".": "./dist/index.js"
+		".": "./index.ts"
 	},
 	"engines": {
 		"node": ">=20"
@@ -37,16 +37,8 @@
 		"typescript": "^5.2.2"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^6.8.0",
-		"@typescript-eslint/parser": "^6.8.0",
 		"bun-types": "^1.0.6",
-		"eslint": "^8.51.0",
-		"eslint-plugin-github": "^4.10.1",
-		"eslint-plugin-jest": "^27.4.2",
-		"eslint-plugin-jsonc": "^2.10.0",
-		"eslint-plugin-prettier": "^5.0.1",
-		"prettier": "^3.0.3",
-		"prettier-eslint": "^15.0.1"
+		"prettier": "^3.0.3"
 	},
 	"volta": {
 		"node": "20.8.0"
