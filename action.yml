@@ -23,7 +23,7 @@ runs:
     - uses: oven-sh/setup-bun@v1
     - run: bun install --production
       shell: bash
-    - run: bun src/index.ts ${{ inputs.docs-root-path }} '${{ inputs.supabase-url }}' '${{ inputs.supabase-service-role-key }}'
+    - run: bun src/index.ts
       shell: bash
       env:
         DOCS_ROOT_PATH: ${{ inputs.docs-root-path }}

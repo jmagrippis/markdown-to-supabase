@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
-      - run: supabase db start
+      - run: supabase start
       - uses: ./
         with:
           supabase-url: 'http://localhost:54321'
