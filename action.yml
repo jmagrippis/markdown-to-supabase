@@ -1,6 +1,9 @@
 name: 'markdown-to-supabase'
 description: 'A Github action which syncs your markdown files with your Supabase database'
 author: 'Johnny Magrippis'
+branding:
+  icon: 'database'
+  color: 'green'
 
 # Define your inputs here.
 inputs:
