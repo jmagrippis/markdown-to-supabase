@@ -1,8 +1,8 @@
-import {expect, test} from 'bun:test'
+import {expect, it} from 'bun:test'
 
 import {run} from './main'
 
-test('errors when no supabase url is provided', async () => {
+it('errors when no supabase url is provided', async () => {
 	try {
 		await run({
 			docsRootPath: 'docs',
