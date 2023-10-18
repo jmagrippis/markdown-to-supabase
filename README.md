@@ -2,15 +2,15 @@
 
 ![Action Smoke Test](https://github.com/jmagrippis/markdown-to-supabase/actions/workflows/ci.yaml/badge.svg)
 
-A Github action which syncs your markdown files with your Supabase database!
+A Github action which syncs your [markdown](https://daringfireball.net/projects/markdown/) files with your [Supabase](https://supabase.com/) database!
 
 ## Usage
 
-In whichever repository you wish to sync your markdown files with your Supabase database, create a new action called `.github/workflows/markdown-to-supabase.yml` with the following content:
+In whichever repository you have markdown files you'd like to sync with your Supabase database, create a new action definition `yaml`, such as a `.github/workflows/markdown-to-supabase.yaml` with the following content:
 
-```yml
+```yaml
 name: 'Sync Markdown with Supabase'
-on: # run on main branch changes
+on: # run only on main branch changes
   push:
     branches:
       - main
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: supabase/embeddings-generator@v0.x.x # Find the latest version in the Marketplace
+      - uses: supabase/markdown-to-supabase@v0.1 # Find the latest version in the Marketplace
         with:
           supabase-url: ${{ vars.PUBLIC_SUPABASE_URL }}
           supabase-service-role-key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
