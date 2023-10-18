@@ -25,3 +25,7 @@ runs:
       shell: bash
     - run: bun src/index.ts ${{ inputs.docs-root-path }} '${{ inputs.supabase-url }}' '${{ inputs.supabase-service-role-key }}'
       shell: bash
+      env:
+        DOCS_ROOT_PATH: ${{ inputs.docs-root-path }}
+        PUBLIC_SUPABASE_URL: ${{ inputs.supabase-url }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ inputs.supabase-service-role-key }}
