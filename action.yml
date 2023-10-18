@@ -10,6 +10,10 @@ inputs:
       files you would like to sync with your DB'
     required: false
     default: 'docs'
+  target-table:
+    description: 'The target table in your Supabase DB. All the matching markdown files will be synced there!'
+    required: false
+    default: 'docs'
   supabase-url:
     required: true
     description: 'Your Supabase project URL'
@@ -27,5 +31,6 @@ runs:
       shell: bash
       env:
         DOCS_ROOT_PATH: ${{ inputs.docs-root-path }}
+        TARGET_TABLE: ${{ inputs.target-table }}
         PUBLIC_SUPABASE_URL: ${{ inputs.supabase-url }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ inputs.supabase-service-role-key }}

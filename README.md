@@ -1,9 +1,8 @@
 # Markdown to Supabase
 
-A Github action which syncs your markdown files with your Supabase database!
+![Action Smoke Test](https://github.com/jmagrippis/markdown-to-supabase/actions/workflows/ci.yaml/badge.svg)
 
-This is under active development and not well-tested! You are NOT meant to use
-this... yet 🙏
+A Github action which syncs your markdown files with your Supabase database!
 
 ## Usage
 
@@ -25,14 +24,17 @@ jobs:
         with:
           supabase-url: ${{ vars.PUBLIC_SUPABASE_URL }}
           supabase-service-role-key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          docs-root-path: 'docs' # optional: defaults to "docs". Where the md you want to sync lives
+          docs-root-path: 'docs' # optional: defaults to "docs". Where the md files you want to sync are located
+          target-table: 'docs' # optional: defaults to "docs". The target Supabase DB table
 ```
 
-Make sure to set the `SUPABASE_SERVICE_ROLE_KEY` as a Github repository secret, and the `PUBLIC_SUPABASE_URL` as a repository variable in your repo settings (settings > secrets > actions).
+Make sure to set the `SUPABASE_SERVICE_ROLE_KEY` as a Github repository secret, and the `PUBLIC_SUPABASE_URL` as a repository variable in your repo settings (settings > secrets > actions). [Read more about Action Secrets and Variables](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository).
 
 ## Required DB Schema + Sample Migration
 
-This action assumes you have a `docs` table in the public schema. There is a sample migration you can get inspired by in the `supabase/migrations` directory.
+This action assumes you have a `docs` table in the public schema, with a few required fields. There is a sample migration you can get inspired by in the `supabase/migrations` directory.
+
+You may change the target table with the `target-table` action input.
 
 ## No file deletions!
 
@@ -41,6 +43,16 @@ This action does not do anything to confirm whether there still is a correspondi
 Also, if you change a filename in a way that results in a different `slug`, or put it in a different subdirectory, this action would create an additional record in the DB for it.
 
 All of this is done to ensure we don't delete records by accident! ... And it's also less work in the business logic.
+
+## Why `markdown-to-supabase`?!
+
+[Next.js has some first-party support for rendering markdown & MDX](https://nextjs.org/docs/app/building-your-application/configuring/mdx), and there are plugins that can help you import markdown with Vite, for other projects such as SvelteKit.
+
+However, while I find Markdown extremely easy & breezy to write in, keeping my docs just in the filesystem makes my life harder in other ways. Having my docs in Supabase means I can more easily have guaranteed foreign relationships between my docs and user likes, reactions and comments for example. "Cleverer" fuzzy search is more efficient & generative vector search possible. "Related docs" is simpler to implement!
+
+This action aims to get the best of both worlds, by keeping the writing and version experience in markdown files under github version control, while automatically syncing those markdown docs to your Supabase database! It's crazy enough to work.
+
+You can [how it's working out for me in a real project under active development](https://johnnify.com/)!
 
 ## License
 

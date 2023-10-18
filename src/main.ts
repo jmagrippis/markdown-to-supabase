@@ -6,19 +6,17 @@ import {parseMdFile} from './parseMdFile'
 
 type ActionInput = {
 	docsRootPath: string
+	targetTable: string
 	supabaseUrl: string
 	supabaseServiceRoleKey: string
 }
 
 export const run = async ({
 	docsRootPath,
+	targetTable,
 	supabaseUrl,
 	supabaseServiceRoleKey,
 }: ActionInput): Promise<void> => {
-	if (!docsRootPath || !supabaseUrl || !supabaseServiceRoleKey) {
-		throw new Error('invalid arguments')
-	}
-
 	const mdPaths = await getMdPaths(docsRootPath)
 
 	if (!mdPaths.length) {
@@ -44,7 +42,7 @@ export const run = async ({
 
 		// Check for existing page in DB and compare checksums
 		const {error: fetchError, data: existingDoc} = await supabase
-			.from('docs')
+			.from(targetTable)
 			.select('id, checksum')
 			.match({slug})
 			.limit(1)
@@ -57,7 +55,7 @@ export const run = async ({
 		if (!existingDoc) {
 			console.log(`👶 new file ${path}, inserting into DB...`)
 
-			const {error: insertError} = await supabase.from('docs').insert({
+			const {error: insertError} = await supabase.from(targetTable).insert({
 				slug,
 				checksum: doc.checksum,
 				content: doc.content,
@@ -80,7 +78,7 @@ export const run = async ({
 				console.log(`checksums do not match, updating ${slug}...`)
 
 				const {error: updateError} = await supabase
-					.from('docs')
+					.from(targetTable)
 					.update({
 						checksum: doc.checksum,
 						content: doc.content,
