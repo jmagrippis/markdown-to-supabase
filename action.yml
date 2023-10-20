@@ -34,7 +34,7 @@ runs:
       shell: bash
     - run: bun install --production
       shell: bash
-    - run: bun src/index.ts
+    - run: bun ./src/index.ts
       shell: bash
       env:
         DOCS_ROOT_PATH: ${{ inputs.docs-root-path }}
