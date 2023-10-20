@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: supabase/markdown-to-supabase@v0.1 # Find the latest version in the Marketplace
+      - uses: jmagrippis/markdown-to-supabase@v0.1.0 # Find the latest version in the Marketplace
         with:
           supabase-url: ${{ vars.PUBLIC_SUPABASE_URL }}
           supabase-service-role-key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
