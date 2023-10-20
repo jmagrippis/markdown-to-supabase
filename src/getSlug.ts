@@ -1,4 +1,4 @@
-import {slug} from 'github-slugger'
+import slugify from 'slugify'
 
 export const getSlug = (path: string, rootDirectory: string) => {
 	const lastDotIndex = path.lastIndexOf('.')
@@ -7,5 +7,8 @@ export const getSlug = (path: string, rootDirectory: string) => {
 		.slice(rootDirectory.length + 1, lastDotIndex)
 		.replace('/', ' ')
 
-	return slug(subPath)
+	return slugify(subPath, {
+		lower: true,
+		strict: true,
+	})
 }

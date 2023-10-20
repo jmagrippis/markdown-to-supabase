@@ -1,0 +1,9 @@
+# do not format dist!
+dist
+
+# do not format supabase internal auto-generated files
+supabase/.temp
+supabase/.branches
+
+# do not format package manager lockfiles
+bun.lockb

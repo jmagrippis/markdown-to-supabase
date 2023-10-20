@@ -28,13 +28,7 @@ runs:
   using: composite
   steps:
     - uses: oven-sh/setup-bun@v1
-    - run: cd ${{ github.action_path }}
-      shell: bash
-    - run: bun install --production
-      shell: bash
-    - run: cd -
-      shell: bash
-    - run: bun ${{ github.action_path }}/src/index.ts
+    - run: bun ${{ github.action_path }}/dist/index.js
       shell: bash
       env:
         DOCS_ROOT_PATH: ${{ inputs.docs-root-path }}
