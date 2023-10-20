@@ -28,13 +28,13 @@ runs:
   using: composite
   steps:
     - uses: oven-sh/setup-bun@v1
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
     - run: cd ${{ github.action_path }}
       shell: bash
     - run: bun install --production
       shell: bash
-    - run: bun ./src/index.ts
+    - run: cd -
+      shell: bash
+    - run: bun ${{ github.action_path }}/src/index.ts
       shell: bash
       env:
         DOCS_ROOT_PATH: ${{ inputs.docs-root-path }}

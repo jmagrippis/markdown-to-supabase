@@ -18,7 +18,7 @@ jobs:
       - run: bun test
 
   smoke-test:
-    name: Aciton Smoke Test
+    name: Action Smoke Test
     runs-on: ubuntu-latest
 
     steps:
