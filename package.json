@@ -1,7 +1,7 @@
 {
 	"name": "markdown-to-supabase",
 	"description": "A Github action which syncs your markdown files with your Supabase database",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"author": "Johnny Magrippis <j@magrippis.com>",
 	"private": true,
 	"homepage": "https://github.com/jmagrippis/markdown-to-supabase",
