@@ -1,7 +1,7 @@
 {
 	"name": "markdown-to-supabase",
 	"description": "A Github action which syncs your markdown files with your Supabase database",
-	"version": "0.1.6",
+	"version": "0.2.0",
 	"author": "Johnny Magrippis <j@magrippis.com>",
 	"private": true,
 	"homepage": "https://github.com/jmagrippis/markdown-to-supabase",
@@ -30,7 +30,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@actions/core": "^1.10.1",
-		"@supabase/supabase-js": "^2.38.1",
+		"@supabase/supabase-js": "^2.38.2",
 		"glob": "^10.3.10",
 		"gray-matter": "^4.0.3",
 		"slugify": "^1.6.6",
@@ -39,7 +39,7 @@
 	},
 	"devDependencies": {
 		"@vercel/ncc": "^0.38.1",
-		"bun-types": "^1.0.6",
+		"bun-types": "^1.0.7",
 		"prettier": "^3.0.3"
 	},
 	"volta": {

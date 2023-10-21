@@ -47317,7 +47317,7 @@ const run = async ({ docsRootPath, targetTable, supabaseUrl, supabaseServiceRole
         // Check for existing page in DB and compare checksums
         const { error: fetchError, data: existingDoc } = await supabase
             .from(targetTable)
-            .select('id, checksum')
+            .select('checksum')
             .match({ slug })
             .limit(1)
             .maybeSingle();
@@ -47326,12 +47326,18 @@ const run = async ({ docsRootPath, targetTable, supabaseUrl, supabaseServiceRole
         }
         if (!existingDoc) {
             console.log(`👶 new file ${path}, inserting into DB...`);
-            const { error: insertError } = await supabase.from(targetTable).insert({
+            const insertedDoc = {
                 slug,
                 checksum: doc.checksum,
                 content: doc.content,
                 front_matter: doc.frontMatter,
-            });
+            };
+            if (doc.publishedAt) {
+                insertedDoc.published_at = doc.publishedAt;
+            }
+            const { error: insertError } = await supabase
+                .from(targetTable)
+                .insert(insertedDoc);
             if (insertError) {
                 throw insertError;
             }
@@ -47346,15 +47352,21 @@ const run = async ({ docsRootPath, targetTable, supabaseUrl, supabaseServiceRole
             }
             else {
                 console.log(`checksums do not match, updating ${slug}...`);
-                const { error: updateError } = await supabase
-                    .from(targetTable)
-                    .update({
+                const updatedDoc = {
+                    slug,
                     checksum: doc.checksum,
                     content: doc.content,
                     front_matter: doc.frontMatter,
                     updated_at: new Date().toISOString(),
-                })
-                    .match({ slug });
+                };
+                if (doc.publishedAt) {
+                    updatedDoc.published_at = doc.publishedAt;
+                }
+                const { error: updateError } = await supabase
+                    .from(targetTable)
+                    .update(updatedDoc)
+                    .match({ slug })
+                    .limit(1);
                 if (updateError) {
                     throw updateError;
                 }
@@ -47393,7 +47405,12 @@ const parseMdFile = async (path) => {
     const raw = await file.text();
     const checksum = deriveChecksum(raw);
     const { content, data } = (0, gray_matter_1.default)(raw);
-    return { content, frontMatter: data, checksum };
+    return {
+        checksum,
+        content,
+        frontMatter: data,
+        publishedAt: data.publishedAt,
+    };
 };
 exports.parseMdFile = parseMdFile;
 

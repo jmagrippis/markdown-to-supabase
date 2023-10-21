@@ -14,5 +14,10 @@ export const parseMdFile = async (path: string) => {
 
 	const {content, data} = matter(raw)
 
-	return {content, frontMatter: data, checksum}
+	return {
+		checksum,
+		content,
+		frontMatter: data,
+		publishedAt: data.publishedAt,
+	}
 }

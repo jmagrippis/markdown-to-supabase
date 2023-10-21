@@ -35,8 +35,20 @@ it('strips any front-matter from the content of the specified markdown file', as
 	expect(content).not.toInclude('publishedAt')
 })
 
-it('returns a checkSum', async () => {
+it('returns a checksum', async () => {
 	const {checksum} = await parseMdFile('docs/sample.md')
 
 	expect(checksum).toBe('sjRTLllxsxHX7gsmNEv7xsfVUL4xVOAJLi5b9XloiSU=')
+})
+
+it('extracts a `publishedAt` when it exists in the frontMatter', async () => {
+	const {publishedAt} = await parseMdFile('docs/with-front-matter.md')
+
+	expect(publishedAt).toBe('Oct 18, 2023')
+})
+
+it('returns no `publishedAt` when there is none in the frontMatter', async () => {
+	const {publishedAt} = await parseMdFile('docs/sample.md')
+
+	expect(publishedAt).toBeUndefined()
 })

@@ -11,6 +11,15 @@ type ActionInput = {
 	supabaseServiceRoleKey: string
 }
 
+type DbDoc = {
+	slug: string
+	checksum: string
+	content: string
+	front_matter: Record<string, unknown>
+	published_at?: string
+	updated_at?: string
+}
+
 export const run = async ({
 	docsRootPath,
 	targetTable,
@@ -43,7 +52,7 @@ export const run = async ({
 		// Check for existing page in DB and compare checksums
 		const {error: fetchError, data: existingDoc} = await supabase
 			.from(targetTable)
-			.select('id, checksum')
+			.select('checksum')
 			.match({slug})
 			.limit(1)
 			.maybeSingle()
@@ -55,12 +64,19 @@ export const run = async ({
 		if (!existingDoc) {
 			console.log(`👶 new file ${path}, inserting into DB...`)
 
-			const {error: insertError} = await supabase.from(targetTable).insert({
+			const insertedDoc: DbDoc = {
 				slug,
 				checksum: doc.checksum,
 				content: doc.content,
 				front_matter: doc.frontMatter,
-			})
+			}
+			if (doc.publishedAt) {
+				insertedDoc.published_at = doc.publishedAt
+			}
+
+			const {error: insertError} = await supabase
+				.from(targetTable)
+				.insert(insertedDoc)
 
 			if (insertError) {
 				throw insertError
@@ -77,15 +93,22 @@ export const run = async ({
 			} else {
 				console.log(`checksums do not match, updating ${slug}...`)
 
+				const updatedDoc: DbDoc = {
+					slug,
+					checksum: doc.checksum,
+					content: doc.content,
+					front_matter: doc.frontMatter,
+					updated_at: new Date().toISOString(),
+				}
+				if (doc.publishedAt) {
+					updatedDoc.published_at = doc.publishedAt
+				}
+
 				const {error: updateError} = await supabase
 					.from(targetTable)
-					.update({
-						checksum: doc.checksum,
-						content: doc.content,
-						front_matter: doc.frontMatter,
-						updated_at: new Date().toISOString(),
-					})
+					.update(updatedDoc)
 					.match({slug})
+					.limit(1)
 
 				if (updateError) {
 					throw updateError

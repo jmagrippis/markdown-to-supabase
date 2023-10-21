@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jmagrippis/markdown-to-supabase@v0.1.0 # Find the latest version in the Marketplace
+      - uses: jmagrippis/markdown-to-supabase@v0.2.0
         with:
           supabase-url: ${{ vars.PUBLIC_SUPABASE_URL }}
           supabase-service-role-key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -35,6 +35,23 @@ Make sure to set the `SUPABASE_SERVICE_ROLE_KEY` as a Github repository secret, 
 This action assumes you have a `docs` table in the public schema, with a few required fields. There is a sample migration you can get inspired by in the `supabase/migrations` directory.
 
 You may change the target table with the `target-table` action input.
+
+You should have a look at the example migration, which includes creating unique columns and indexes, but a quick overview of the necessary columns is:
+
+| _column_     | _type_      |
+| ------------ | ----------- |
+| slug         | text        |
+| checksum     | text        |
+| content      | text        |
+| front_matter | jsonb       |
+| updated_at   | timestamptz |
+| published_at | timestamptz |
+
+`published_at` gets derived when you've got a `publishedAt` in your front-matter. It's handy because you'll probably have at least one page where you need to order your docs by recency. Also allows you to implement a "draft" state, or rudimentary scheduling functionality, by setting `publishedAt` to a future date.
+
+You may have additional columns, such as an `id` and a `created_at`, which are included in the example migration.
+
+You may add any other column really, but I'd advise against it, since nothing else will sync based on the markdown file and you'll end up with two sources of truth. If you want extra data, I'd suggest putting it in the front-matter!
 
 ## No file deletions!
 
